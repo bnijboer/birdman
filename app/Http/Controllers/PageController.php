@@ -18,10 +18,10 @@ class PageController extends Controller
     public function __invoke()
     {
         $features = [
-            'behaviors' => Behavior::all(),
             'colors' => Color::all(),
-            'habitats' => Habitat::all(),
-            'shapes' => Shape::all()
+            'behaviors' => Behavior::all(),
+            'shapes' => Shape::all(),
+            'habitats' => Habitat::all()
         ];
         
         return view('home', compact('features'));
