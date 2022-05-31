@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\BirdController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,8 +15,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [PageController::class, 'index'])->name('home');
-Route::get('/birds/{id}', [PageController::class, 'show'])->name('birds.show');
-Route::get('/search', [PageController::class, 'search'])->name('search');
+Route::get('/', PageController::class)->name('home');
 
-Route::get('/test', [PageController::class, 'test']);
+Route::get('/birds', [BirdController::class, 'index'])->name('birds.index');
+Route::get('/birds/{id}', [BirdController::class, 'show'])->name('birds.show');

@@ -9,17 +9,7 @@
     </head>
     <body>
         <div id="app">
-            <example-component></example-component>
+            <select-features :features='@json($features)'></select-features>
         </div>
-        <script>
-            window.onload = () => {
-                let color = '2+4';
-                let habitat = '5+3';
-                
-                const response = axios.get(`/search?color=${color}&habitat=${habitat}`).then((response) => {
-                    console.log(response.data)
-                });
-            }
-        </script>    
     </body>
 </html>

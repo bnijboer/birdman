@@ -13,9 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('behaviors', function (Blueprint $table) {
+        Schema::create('bird_behavior', function (Blueprint $table) {
             $table->id();
-            $table->string('description');
+            $table->foreignId('bird_id');
+            $table->foreignId('behavior_id');
         });
     }
 
@@ -26,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('behaviors');
+        Schema::dropIfExists('bird_behavior');
     }
 };

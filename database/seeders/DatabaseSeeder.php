@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Bird;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -16,22 +17,31 @@ class DatabaseSeeder extends Seeder
         $this->call([
             BirdSeeder::class,
             ColorSeeder::class,
+            ShapeSeeder::class,
             HabitatSeeder::class,
         ]);
         
-        $birds = \App\Models\Bird::all();
+        $birds = Bird::all();
         
         foreach ($birds as $bird) {
             if (isset($bird->color)) {
-                $colorIds = explode('/', $bird->color);
+                $colorIds = explode('&', $bird->color);
                 
                 foreach ($colorIds as $colorId) {
                     $bird->colors()->attach($colorId);
                 }
             }
             
+            if (isset($bird->shape)) {
+                $shapeIds = explode('&', $bird->shape);
+                
+                foreach ($shapeIds as $shapeId) {
+                    $bird->shapes()->attach($shapeId);
+                }
+            }
+            
             if (isset($bird->habitat)) {
-                $habitatIds = explode('/', $bird->habitat);
+                $habitatIds = explode('&', $bird->habitat);
                 
                 foreach ($habitatIds as $habitatId) {
                     $bird->habitats()->attach($habitatId);

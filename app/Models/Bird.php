@@ -15,6 +15,10 @@ class Bird extends Model
         return $this->belongsToMany(Color::class);
     }
     
+    public function shapes() {
+        return $this->belongsToMany(Shape::class);
+    }
+    
     public function habitats() {
         return $this->belongsToMany(Habitat::class);
     }

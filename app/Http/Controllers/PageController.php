@@ -2,31 +2,28 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Bird;
+use App\Models\Behavior;
+use App\Models\Habitat;
+use App\Models\Color;
+use App\Models\Shape;
 use Illuminate\Http\Request;
 
 class PageController extends Controller
 {
-    public function index()
+    /**
+     * View home page.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function __invoke()
     {
-        return view('home');
-    }
-    
-    public function search(Request $request)
-    {
-        $colorIds = explode(' ', $request->color);
-        $habitatIds = explode(' ', $request->habitat);
+        $features = [
+            'behaviors' => Behavior::all(),
+            'colors' => Color::all(),
+            'habitats' => Habitat::all(),
+            'shapes' => Shape::all()
+        ];
         
-        $birds = Bird::whereHas('colors', function($query) use($colorIds) {
-            $query->whereIn('color_id', $colorIds);
-        })
-        ->whereHas('habitats', function($query) use($habitatIds) {
-            $query->whereIn('habitat_id', $habitatIds);
-        })
-        ->get();
-        
-        return response()->json([
-            'birds' => $birds,
-        ]);
+        return view('home', compact('features'));
     }
 }
