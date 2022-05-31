@@ -5413,58 +5413,45 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
-//
-//
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: ['features'],
   data: function data() {
     return {
-      colors: ['all'],
-      behaviors: ['all'],
-      shapes: ['all'],
-      habitats: ['all'],
-      colorsSelected: [],
-      selection: {
-        'colors': [],
-        'shapes': []
+      color: this.features.colors,
+      behavior: this.features.behaviors,
+      shape: this.features.shapes,
+      habitat: this.features.habitats,
+      selected: {
+        'color': [],
+        'behavior': [],
+        'shape': [],
+        'habitat': []
       }
     };
   },
   methods: {
-    addSelection: function addSelection(event) {
-      // console.log(this.selection);
-      this.selection[event.target.name].push(event.target.value);
+    addSelected: function addSelected(event) {
+      this.selected[event.target.name].push(event.target.value);
       this.search();
     },
     search: function search() {
+      var ids;
       var params = [];
 
-      for (var _i = 0, _Object$entries = Object.entries(this.selection); _i < _Object$entries.length; _i++) {
+      for (var _i = 0, _Object$entries = Object.entries(this.selected); _i < _Object$entries.length; _i++) {
         var _Object$entries$_i = _slicedToArray(_Object$entries[_i], 2),
             key = _Object$entries$_i[0],
-            value = _Object$entries$_i[1];
+            values = _Object$entries$_i[1];
 
-        if (value.length) {
-          var values = value.join('+');
-          params.push("".concat(key, "=").concat(values));
+        if (values.length) {
+          ids = values.join('+');
+          params.push("".concat(key, "=").concat(ids));
         }
       }
 
-      var query = params.join('&');
-      console.log(query); // let color = this.colorsSelected.map(item => {
-      //     return item.id
-      // }).join('+');
-      // let params = Object.keys(this.features).map(key => {
-      //     return `${key}=${color}`
-      // }).join('&');
-      // console.log(params);
-      // let behavior = this.behaviors.join('+');
-      // let shape = this.shapes.join('+');
-      // let habitat = this.habitats.join('+');
-
-      var response = axios.get("/birds?color=".concat(color, "&behavior=").concat(behavior, "&shape=").concat(shape, "&habitat=").concat(habitat)).then(function (response) {
+      var url = "/birds?".concat(params.join('&'));
+      console.log(url);
+      var response = axios.get(url).then(function (response) {
         console.log(response.data);
       });
     }
@@ -28100,15 +28087,11 @@ var render = function () {
               {
                 name: "model",
                 rawName: "v-model",
-                value: _vm.colors,
-                expression: "colors",
+                value: _vm.color,
+                expression: "color",
               },
             ],
-            attrs: {
-              id: "color-select",
-              name: "colors",
-              size: _vm.features.colors.length + 1,
-            },
+            attrs: { id: "color-select", name: "color" },
             on: {
               change: [
                 function ($event) {
@@ -28120,34 +28103,28 @@ var render = function () {
                       var val = "_value" in o ? o._value : o.value
                       return val
                     })
-                  _vm.colors = $event.target.multiple
+                  _vm.color = $event.target.multiple
                     ? $$selectedVal
                     : $$selectedVal[0]
                 },
-                _vm.addSelection,
+                _vm.addSelected,
               ],
             },
           },
-          [
-            _c("option", { attrs: { value: "all" } }, [_vm._v("Alle kleuren")]),
-            _vm._v(" "),
-            _vm._l(_vm.features.colors, function (color, index) {
-              return _c(
-                "option",
-                { key: index, domProps: { value: color.id } },
-                [_vm._v(_vm._s(color.type))]
-              )
-            }),
-          ],
-          2
+          _vm._l(_vm.features.colors, function (color, index) {
+            return _c("option", { key: index, domProps: { value: color.id } }, [
+              _vm._v(_vm._s(color.type)),
+            ])
+          }),
+          0
         ),
         _vm._v(" "),
         _c(
           "div",
           [
-            _c("div", [_vm._v("Selected colors:")]),
+            _c("div", [_vm._v("Selected color:")]),
             _vm._v(" "),
-            _vm._l(_vm.colorsSelected, function (color, index) {
+            _vm._l(_vm.selected.color, function (color, index) {
               return _c("div", { key: index }, [
                 _vm._v(
                   "\n                " + _vm._s(color.type) + "\n            "
@@ -28167,15 +28144,11 @@ var render = function () {
               {
                 name: "model",
                 rawName: "v-model",
-                value: _vm.behaviors,
-                expression: "behaviors",
+                value: _vm.behavior,
+                expression: "behavior",
               },
             ],
-            attrs: {
-              id: "behavior-select",
-              name: "behaviors",
-              size: _vm.features.behaviors.length + 1,
-            },
+            attrs: { id: "behavior-select", name: "behavior" },
             on: {
               change: [
                 function ($event) {
@@ -28187,28 +28160,22 @@ var render = function () {
                       var val = "_value" in o ? o._value : o.value
                       return val
                     })
-                  _vm.behaviors = $event.target.multiple
+                  _vm.behavior = $event.target.multiple
                     ? $$selectedVal
                     : $$selectedVal[0]
                 },
-                _vm.search,
+                _vm.addSelected,
               ],
             },
           },
-          [
-            _c("option", { attrs: { value: "all" } }, [
-              _vm._v("Alle soorten gedrag"),
-            ]),
-            _vm._v(" "),
-            _vm._l(_vm.features.behaviors, function (behavior, index) {
-              return _c(
-                "option",
-                { key: index, domProps: { value: behavior.id } },
-                [_vm._v(_vm._s(behavior.description))]
-              )
-            }),
-          ],
-          2
+          _vm._l(_vm.features.behaviors, function (behavior, index) {
+            return _c(
+              "option",
+              { key: index, domProps: { value: behavior.id } },
+              [_vm._v(_vm._s(behavior.description))]
+            )
+          }),
+          0
         ),
         _vm._v(" "),
         _c("label", { attrs: { for: "shape-select" } }, [_vm._v("Vorm:")]),
@@ -28220,15 +28187,11 @@ var render = function () {
               {
                 name: "model",
                 rawName: "v-model",
-                value: _vm.shapes,
-                expression: "shapes",
+                value: _vm.shape,
+                expression: "shape",
               },
             ],
-            attrs: {
-              id: "shape-select",
-              name: "shapes",
-              size: _vm.features.shapes.length + 1,
-            },
+            attrs: { id: "shape-select", name: "shape" },
             on: {
               change: [
                 function ($event) {
@@ -28240,26 +28203,20 @@ var render = function () {
                       var val = "_value" in o ? o._value : o.value
                       return val
                     })
-                  _vm.shapes = $event.target.multiple
+                  _vm.shape = $event.target.multiple
                     ? $$selectedVal
                     : $$selectedVal[0]
                 },
-                _vm.addSelection,
+                _vm.addSelected,
               ],
             },
           },
-          [
-            _c("option", { attrs: { value: "all" } }, [_vm._v("Alle vormen")]),
-            _vm._v(" "),
-            _vm._l(_vm.features.shapes, function (shape, index) {
-              return _c(
-                "option",
-                { key: index, domProps: { value: shape.id } },
-                [_vm._v(_vm._s(shape.appearance))]
-              )
-            }),
-          ],
-          2
+          _vm._l(_vm.features.shapes, function (shape, index) {
+            return _c("option", { key: index, domProps: { value: shape.id } }, [
+              _vm._v(_vm._s(shape.appearance)),
+            ])
+          }),
+          0
         ),
         _vm._v(" "),
         _c("label", { attrs: { for: "habitat-select" } }, [
@@ -28273,15 +28230,11 @@ var render = function () {
               {
                 name: "model",
                 rawName: "v-model",
-                value: _vm.habitats,
-                expression: "habitats",
+                value: _vm.habitat,
+                expression: "habitat",
               },
             ],
-            attrs: {
-              id: "habitat-select",
-              name: "habitats",
-              size: _vm.features.habitats.length + 1,
-            },
+            attrs: { id: "habitat-select", name: "habitat" },
             on: {
               change: [
                 function ($event) {
@@ -28293,28 +28246,22 @@ var render = function () {
                       var val = "_value" in o ? o._value : o.value
                       return val
                     })
-                  _vm.habitats = $event.target.multiple
+                  _vm.habitat = $event.target.multiple
                     ? $$selectedVal
                     : $$selectedVal[0]
                 },
-                _vm.search,
+                _vm.addSelected,
               ],
             },
           },
-          [
-            _c("option", { attrs: { value: "all" } }, [
-              _vm._v("Alle leefgebieden"),
-            ]),
-            _vm._v(" "),
-            _vm._l(_vm.features.habitats, function (habitat, index) {
-              return _c(
-                "option",
-                { key: index, domProps: { value: habitat.id } },
-                [_vm._v(_vm._s(habitat.name))]
-              )
-            }),
-          ],
-          2
+          _vm._l(_vm.features.habitats, function (habitat, index) {
+            return _c(
+              "option",
+              { key: index, domProps: { value: habitat.id } },
+              [_vm._v(_vm._s(habitat.name))]
+            )
+          }),
+          0
         ),
       ]
     ),

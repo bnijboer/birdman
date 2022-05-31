@@ -3,13 +3,13 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Birdman</title>
+        <title>{{ config('app.name', 'Birdman') }}</title>
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
         <script src="{{ asset('js/app.js') }}" defer></script>
     </head>
     <body>
         <div id="app">
-            <select-features :features='@json($features)'></select-features>
+            <select-features :features='@json($features)' />
         </div>
     </body>
 </html>
