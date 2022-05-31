@@ -5368,6 +5368,25 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -5405,15 +5424,46 @@ __webpack_require__.r(__webpack_exports__);
       colors: ['all'],
       behaviors: ['all'],
       shapes: ['all'],
-      habitats: ['all']
+      habitats: ['all'],
+      colorsSelected: [],
+      selection: {
+        'colors': [],
+        'shapes': []
+      }
     };
   },
   methods: {
-    search: function search(event) {
-      var color = this.colors.join('+');
-      var behavior = this.behaviors.join('+');
-      var shape = this.shapes.join('+');
-      var habitat = this.habitats.join('+');
+    addSelection: function addSelection(event) {
+      // console.log(this.selection);
+      this.selection[event.target.name].push(event.target.value);
+      this.search();
+    },
+    search: function search() {
+      var params = [];
+
+      for (var _i = 0, _Object$entries = Object.entries(this.selection); _i < _Object$entries.length; _i++) {
+        var _Object$entries$_i = _slicedToArray(_Object$entries[_i], 2),
+            key = _Object$entries$_i[0],
+            value = _Object$entries$_i[1];
+
+        if (value.length) {
+          var values = value.join('+');
+          params.push("".concat(key, "=").concat(values));
+        }
+      }
+
+      var query = params.join('&');
+      console.log(query); // let color = this.colorsSelected.map(item => {
+      //     return item.id
+      // }).join('+');
+      // let params = Object.keys(this.features).map(key => {
+      //     return `${key}=${color}`
+      // }).join('&');
+      // console.log(params);
+      // let behavior = this.behaviors.join('+');
+      // let shape = this.shapes.join('+');
+      // let habitat = this.habitats.join('+');
+
       var response = axios.get("/birds?color=".concat(color, "&behavior=").concat(behavior, "&shape=").concat(shape, "&habitat=").concat(habitat)).then(function (response) {
         console.log(response.data);
       });
@@ -28057,8 +28107,7 @@ var render = function () {
             attrs: {
               id: "color-select",
               name: "colors",
-              size: "15",
-              multiple: "",
+              size: _vm.features.colors.length + 1,
             },
             on: {
               change: [
@@ -28075,7 +28124,7 @@ var render = function () {
                     ? $$selectedVal
                     : $$selectedVal[0]
                 },
-                _vm.search,
+                _vm.addSelection,
               ],
             },
           },
@@ -28093,7 +28142,23 @@ var render = function () {
           2
         ),
         _vm._v(" "),
-        _c("label", { attrs: { for: "behavior-select" } }, [_vm._v("Kleur:")]),
+        _c(
+          "div",
+          [
+            _c("div", [_vm._v("Selected colors:")]),
+            _vm._v(" "),
+            _vm._l(_vm.colorsSelected, function (color, index) {
+              return _c("div", { key: index }, [
+                _vm._v(
+                  "\n                " + _vm._s(color.type) + "\n            "
+                ),
+              ])
+            }),
+          ],
+          2
+        ),
+        _vm._v(" "),
+        _c("label", { attrs: { for: "behavior-select" } }, [_vm._v("Gedrag:")]),
         _vm._v(" "),
         _c(
           "select",
@@ -28109,8 +28174,7 @@ var render = function () {
             attrs: {
               id: "behavior-select",
               name: "behaviors",
-              size: "15",
-              multiple: "",
+              size: _vm.features.behaviors.length + 1,
             },
             on: {
               change: [
@@ -28132,7 +28196,9 @@ var render = function () {
             },
           },
           [
-            _c("option", { attrs: { value: "all" } }, [_vm._v("Alle kleuren")]),
+            _c("option", { attrs: { value: "all" } }, [
+              _vm._v("Alle soorten gedrag"),
+            ]),
             _vm._v(" "),
             _vm._l(_vm.features.behaviors, function (behavior, index) {
               return _c(
@@ -28161,8 +28227,7 @@ var render = function () {
             attrs: {
               id: "shape-select",
               name: "shapes",
-              size: "11",
-              multiple: "",
+              size: _vm.features.shapes.length + 1,
             },
             on: {
               change: [
@@ -28179,7 +28244,7 @@ var render = function () {
                     ? $$selectedVal
                     : $$selectedVal[0]
                 },
-                _vm.search,
+                _vm.addSelection,
               ],
             },
           },
@@ -28215,8 +28280,7 @@ var render = function () {
             attrs: {
               id: "habitat-select",
               name: "habitats",
-              size: "10",
-              multiple: "",
+              size: _vm.features.habitats.length + 1,
             },
             on: {
               change: [
