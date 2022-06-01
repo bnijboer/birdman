@@ -17,5 +17,5 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', PageController::class)->name('home');
 
-Route::get('/birds', [BirdController::class, 'index'])->name('birds.index');
-Route::get('/birds/{id}', [BirdController::class, 'show'])->name('birds.show');
+Route::get('/birds', [BirdController::class, 'index']);
+Route::get('/birds/{id}', [BirdController::class, 'show']);

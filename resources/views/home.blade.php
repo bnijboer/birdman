@@ -8,7 +8,7 @@
         <script src="{{ asset('js/app.js') }}" defer></script>
     </head>
     <body>
-        <div id="app" class="bg-blue-200">
+        <div id="app">
             <all-features :features='@json($features)' />
         </div>
     </body>
