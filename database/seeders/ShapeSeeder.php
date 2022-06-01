@@ -10,6 +10,7 @@ class ShapeSeeder extends CsvSeeder
 	public function __construct()
 	{
 		$this->table = 'shapes';
+        $this->csv_delimiter = ';';
 		$this->filename = base_path().'/database/seeds/shapes_csv.csv';
 	}
     

@@ -10,6 +10,7 @@ class ColorSeeder extends CsvSeeder
 	public function __construct()
 	{
 		$this->table = 'colors';
+        $this->csv_delimiter = ';';
 		$this->filename = base_path().'/database/seeds/colors_csv.csv';
 	}
     

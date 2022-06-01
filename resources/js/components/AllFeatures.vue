@@ -5,10 +5,12 @@
                 <single-feature :feature="{ 'name': name, 'options': options }" @select="add" />
         
                 <div>
-                    <div>Selected {{ name }}:</div>
+                    <div>Gekozen {{ getTranslatedFeature(name) }}:</div>
                     
                     <div v-for="(id, index) in selected[name]" :key="index">
                         {{ Object.values(features[name][parseInt(id) - 1])[1] }}
+                        
+                        <a @click="remove(name, index)">Remove</a>
                     </div>
                 </div>
             </div>
@@ -41,6 +43,12 @@
                 this.search();
             },
             
+            remove(trait, index) {
+                this.selected[trait].splice(index, 1);
+                
+                this.search();
+            },
+            
             search() {
                 let ids;
                 let params = [];
@@ -49,7 +57,7 @@
                     if (values.length) {
                         ids = values.join('+');
                     
-                        params.push(`${key.substring(0, key.length - 1)}=${ids}`);
+                        params.push(`${key}=${ids}`);
                     }
                 }
                 
@@ -58,7 +66,32 @@
                 const response = axios.get(url).then((response) => {
                     console.log(response.data)
                 });
-            }
+            },
+            
+            getTranslatedFeature(name) {
+                let feature;
+                
+                switch(name) {
+                    case 'colors':
+                        feature = 'kleur';
+                    break;
+                    case 'behaviors':
+                        feature = 'gedrag';
+                    break;
+                    case 'shapes':
+                        feature = 'vorm';
+                    break;
+                    case 'habitats':
+                        feature = 'leefgebied';
+                    break;
+                }
+                
+                if (this.selected[name].length > 1) {
+                    feature += 'en';
+                }
+                
+                return feature;
+            },
         }
     }
 </script>

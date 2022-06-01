@@ -10,6 +10,7 @@ class BehaviorSeeder extends CsvSeeder
 	public function __construct()
 	{
 		$this->table = 'behaviors';
+        $this->csv_delimiter = ';';
 		$this->filename = base_path().'/database/seeds/behaviors_csv.csv';
 	}
     

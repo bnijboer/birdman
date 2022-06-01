@@ -5398,6 +5398,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: ['features'],
   data: function data() {
@@ -5417,6 +5419,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       this.selected[trait].push(id);
       this.search();
     },
+    remove: function remove(trait, index) {
+      this.selected[trait].splice(index, 1);
+      this.search();
+    },
     search: function search() {
       var ids;
       var params = [];
@@ -5428,7 +5434,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
         if (values.length) {
           ids = values.join('+');
-          params.push("".concat(key.substring(0, key.length - 1), "=").concat(ids));
+          params.push("".concat(key, "=").concat(ids));
         }
       }
 
@@ -5436,6 +5442,33 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       var response = axios.get(url).then(function (response) {
         console.log(response.data);
       });
+    },
+    getTranslatedFeature: function getTranslatedFeature(name) {
+      var feature;
+
+      switch (name) {
+        case 'colors':
+          feature = 'kleur';
+          break;
+
+        case 'behaviors':
+          feature = 'gedrag';
+          break;
+
+        case 'shapes':
+          feature = 'vorm';
+          break;
+
+        case 'habitats':
+          feature = 'leefgebied';
+          break;
+      }
+
+      if (this.selected[name].length > 1) {
+        feature += 'en';
+      }
+
+      return feature;
     }
   }
 });
@@ -5473,7 +5506,74 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       options: this.feature.options
     };
   },
+  computed: {
+    label: function label() {
+      var label;
+
+      switch (this.name) {
+        case 'colors':
+          label = 'Kleur';
+          break;
+
+        case 'behaviors':
+          label = 'Gedrag';
+          break;
+
+        case 'shapes':
+          label = 'Vorm';
+          break;
+
+        case 'habitats':
+          label = 'Leefgebied';
+          break;
+      }
+
+      return label;
+    },
+    pretext: function pretext() {
+      switch (this.name) {
+        case 'behaviors':
+          this.pretext = 'Vogels die ';
+          break;
+
+        case 'shapes':
+          this.pretext = 'Het lijkt op een ';
+          break;
+
+        case 'habitats':
+          this.pretext = 'Ik ben ';
+          break;
+      }
+    }
+  },
   methods: {
+    getDescription: function getDescription(option) {
+      var pretext;
+
+      switch (this.name) {
+        case 'behaviors':
+          pretext = 'Vogels die ';
+          break;
+
+        case 'shapes':
+          pretext = 'Het lijkt op een ';
+          break;
+
+        case 'habitats':
+          pretext = 'Ik ben ';
+          break;
+      }
+
+      var description;
+
+      if (pretext !== undefined) {
+        description = pretext + Object.values(option)[1];
+      } else {
+        description = Object.values(option)[1][0].toUpperCase() + Object.values(option)[1].slice(1).toLowerCase();
+      }
+
+      return description;
+    },
     select: function select(event) {
       var selected = _defineProperty({}, this.name, event.target.value);
 
@@ -28189,7 +28289,11 @@ var render = function () {
             _c(
               "div",
               [
-                _c("div", [_vm._v("Selected " + _vm._s(name) + ":")]),
+                _c("div", [
+                  _vm._v(
+                    "Gekozen " + _vm._s(_vm.getTranslatedFeature(name)) + ":"
+                  ),
+                ]),
                 _vm._v(" "),
                 _vm._l(_vm.selected[name], function (id, index) {
                   return _c("div", { key: index }, [
@@ -28198,7 +28302,18 @@ var render = function () {
                         _vm._s(
                           Object.values(_vm.features[name][parseInt(id) - 1])[1]
                         ) +
-                        "\n                "
+                        "\n                    \n                    "
+                    ),
+                    _c(
+                      "a",
+                      {
+                        on: {
+                          click: function ($event) {
+                            return _vm.remove(name, index)
+                          },
+                        },
+                      },
+                      [_vm._v("Remove")]
                     ),
                   ])
                 }),
@@ -28237,7 +28352,7 @@ var render = function () {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c("label", { attrs: { for: _vm.name } }, [_vm._v(_vm._s(_vm.name))]),
+    _c("label", { attrs: { for: _vm.name } }, [_vm._v(_vm._s(_vm.label))]),
     _vm._v(" "),
     _c(
       "select",
@@ -28274,7 +28389,7 @@ var render = function () {
       },
       _vm._l(_vm.options, function (option, index) {
         return _c("option", { key: index, domProps: { value: option.id } }, [
-          _vm._v(_vm._s(Object.values(option)[1])),
+          _vm._v(_vm._s(_vm.getDescription(option))),
         ])
       }),
       0

@@ -10,6 +10,7 @@ class BirdSeeder extends CsvSeeder
 	public function __construct()
 	{
 		$this->table = 'birds';
+        $this->csv_delimiter = ';';
 		$this->filename = base_path().'/database/seeds/birds_csv.csv';
 	}
     

@@ -20,9 +20,11 @@ class BirdController extends Controller
         
         $birds = Bird::query();
         
-        foreach($params as $trait => $ids) {
-            $birds = $birds->when($trait, function ($query) use ($trait, $ids) {
-                $query->whereHas("{$trait}s", function ($query) use ($trait, $ids) {
+        foreach($params as $traits => $ids) {
+            $trait = (string) str($traits)->singular;
+            
+            $birds = $birds->when($trait, function ($query) use ($trait, $traits, $ids) {
+                $query->whereHas("{$traits}", function ($query) use ($trait, $ids) {
                     $query->whereIn("{$trait}_id", $ids);
                 });
             });

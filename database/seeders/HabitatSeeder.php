@@ -10,6 +10,7 @@ class HabitatSeeder extends CsvSeeder
 	public function __construct()
 	{
 		$this->table = 'habitats';
+        $this->csv_delimiter = ';';
 		$this->filename = base_path().'/database/seeds/habitats_csv.csv';
 	}
     

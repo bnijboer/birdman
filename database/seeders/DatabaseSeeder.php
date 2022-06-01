@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             BirdSeeder::class,
             ColorSeeder::class,
+            BehaviorSeeder::class,
             ShapeSeeder::class,
             HabitatSeeder::class,
         ]);
@@ -29,6 +30,14 @@ class DatabaseSeeder extends Seeder
                 
                 foreach ($colorIds as $colorId) {
                     $bird->colors()->attach($colorId);
+                }
+            }
+            
+            if (isset($bird->behavior)) {
+                $behaviorIds = explode('&', $bird->behavior);
+                
+                foreach ($behaviorIds as $behaviorId) {
+                    $bird->behaviors()->attach($behaviorId);
                 }
             }
             

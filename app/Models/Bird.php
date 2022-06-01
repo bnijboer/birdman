@@ -11,12 +11,12 @@ class Bird extends Model
     
     protected $guarded = [];
     
-    public function behaviors() {
-        return $this->belongsToMany(Behavior::class);
-    }
-    
     public function colors() {
         return $this->belongsToMany(Color::class);
+    }
+    
+    public function behaviors() {
+        return $this->belongsToMany(Behavior::class);
     }
     
     public function shapes() {
