@@ -2207,6 +2207,15 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: ['features'],
   data: function data() {
@@ -2216,10 +2225,51 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         behaviors: [],
         shapes: [],
         habitats: []
-      }
+      },
+      results: null
     };
   },
+  computed: {
+    criteria: function criteria() {
+      var hasCriteria = false;
+
+      for (var _i = 0, _Object$entries = Object.entries(this.selected); _i < _Object$entries.length; _i++) {
+        var _Object$entries$_i = _slicedToArray(_Object$entries[_i], 2),
+            name = _Object$entries$_i[0],
+            values = _Object$entries$_i[1];
+
+        if (values.length > 0) {
+          hasCriteria = true;
+        }
+      }
+
+      return hasCriteria;
+    }
+  },
   methods: {
+    getLabel: function getLabel(trait) {
+      var translation;
+
+      switch (trait) {
+        case 'colors':
+          translation = 'Kleur';
+          break;
+
+        case 'behaviors':
+          translation = 'Gedrag';
+          break;
+
+        case 'shapes':
+          translation = 'Vorm';
+          break;
+
+        case 'habitats':
+          translation = 'Leefgebied';
+          break;
+      }
+
+      return translation;
+    },
     add: function add(event) {
       var trait = Object.keys(event)[0];
       var id = Object.values(event)[0];
@@ -2234,13 +2284,15 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       this.search();
     },
     search: function search() {
+      var _this = this;
+
       var ids;
       var params = [];
 
-      for (var _i = 0, _Object$entries = Object.entries(this.selected); _i < _Object$entries.length; _i++) {
-        var _Object$entries$_i = _slicedToArray(_Object$entries[_i], 2),
-            key = _Object$entries$_i[0],
-            values = _Object$entries$_i[1];
+      for (var _i2 = 0, _Object$entries2 = Object.entries(this.selected); _i2 < _Object$entries2.length; _i2++) {
+        var _Object$entries2$_i = _slicedToArray(_Object$entries2[_i2], 2),
+            key = _Object$entries2$_i[0],
+            values = _Object$entries2$_i[1];
 
         if (values.length) {
           ids = values.join('+');
@@ -2249,8 +2301,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       }
 
       var url = "/birds?".concat(params.join('&'));
-      var response = axios.get(url).then(function (response) {
-        console.log(response.data);
+      axios.get(url).then(function (response) {
+        _this.results = response.data;
       });
     },
     getTranslatedFeature: function getTranslatedFeature(name) {
@@ -2310,12 +2362,31 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  // props: ['results'],
+  props: ['results'],
   data: function data() {
-    return {
-      noResults: false
+    return {//
     };
+  },
+  computed: {// noResults() {
+    //     let noResults = true;
+    //     if (this.results) {
+    //         noResults = false;
+    //     }
+    //     return noResults;
+    // }
   }
 });
 
@@ -2334,6 +2405,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+//
 //
 //
 //
@@ -2375,21 +2447,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
 
       return label;
-    },
-    pretext: function pretext() {
-      switch (this.name) {
-        case 'behaviors':
-          this.pretext = 'Vogels die ';
-          break;
-
-        case 'shapes':
-          this.pretext = 'Het lijkt op een ';
-          break;
-
-        case 'habitats':
-          this.pretext = 'Ik ben ';
-          break;
-      }
     }
   },
   methods: {
@@ -2424,6 +2481,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       var selected = _defineProperty({}, this.name, event.target.value);
 
       this.$emit('select', selected);
+      event.target.value = '';
     }
   }
 });
@@ -2913,101 +2971,129 @@ var render = function () {
     "div",
     { staticClass: "wrapper" },
     [
-      _c(
-        "form",
-        {
-          on: {
-            submit: function ($event) {
-              $event.preventDefault()
+      _c("div", { staticClass: "search-container" }, [
+        _c(
+          "form",
+          {
+            on: {
+              submit: function ($event) {
+                $event.preventDefault()
+              },
             },
           },
-        },
-        _vm._l(_vm.features, function (options, name) {
-          return _c(
-            "div",
-            { key: name, staticStyle: { margin: "20px" } },
-            [
-              _c("single-feature", {
-                attrs: { feature: { name: name, options: options } },
-                on: { select: _vm.add },
+          [
+            _c(
+              "div",
+              { staticClass: "fields-grid" },
+              _vm._l(_vm.features, function (options, name) {
+                return _c(
+                  "div",
+                  { key: name, staticStyle: { margin: "20px" } },
+                  [
+                    _c("single-feature", {
+                      attrs: { feature: { name: name, options: options } },
+                      on: { select: _vm.add },
+                    }),
+                  ],
+                  1
+                )
               }),
-              _vm._v(" "),
-              _c(
-                "div",
-                [
-                  _c("div", [
-                    _vm._v(
-                      "Gekozen " + _vm._s(_vm.getTranslatedFeature(name)) + ":"
-                    ),
-                  ]),
-                  _vm._v(" "),
-                  _vm._l(_vm.selected[name], function (id, index) {
-                    return _c("div", { key: index }, [
-                      _c("div", { staticClass: "selected-box" }, [
-                        _c(
-                          "a",
-                          {
-                            staticClass: "btn-remove",
-                            on: {
-                              click: function ($event) {
-                                return _vm.remove(name, index)
-                              },
-                            },
-                          },
+              0
+            ),
+          ]
+        ),
+        _vm._v(" "),
+        _vm.criteria
+          ? _c(
+              "div",
+              [
+                _c("h2", { staticClass: "mb-4" }, [_vm._v("Zoekcriteria")]),
+                _vm._v(" "),
+                _vm._l(_vm.selected, function (trait, name) {
+                  return _c(
+                    "div",
+                    { key: name, staticClass: "criteria-container" },
+                    [
+                      trait.length
+                        ? _c("div", { staticClass: "criteria-label" }, [
+                            _c("span", [
+                              _vm._v(_vm._s(_vm.getLabel(name)) + ":"),
+                            ]),
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm._l(trait, function (id, index) {
+                        return _c(
+                          "div",
+                          { key: index, staticClass: "flex flex-wrap" },
                           [
-                            _c(
-                              "svg",
-                              {
-                                staticStyle: {
-                                  "enable-background":
-                                    "new 0 0 503.021 503.021",
-                                },
-                                attrs: {
-                                  fill: "#388e3c",
-                                  xmlns: "http://www.w3.org/2000/svg",
-                                  "xmlns:xlink": "http://www.w3.org/1999/xlink",
-                                  x: "0px",
-                                  y: "0px",
-                                  width: "503.021px",
-                                  height: "503.021px",
-                                  viewBox: "0 0 503.021 503.021",
-                                  "xml:space": "preserve",
-                                },
-                              },
-                              [
-                                _c("path", {
-                                  attrs: {
-                                    d: "M491.613,75.643l-64.235-64.235c-15.202-15.202-39.854-15.202-55.056,0L251.507,132.222L130.686,11.407 c-15.202-15.202-39.853-15.202-55.055,0L11.401,75.643c-15.202,15.202-15.202,39.854,0,55.056l120.821,120.815L11.401,372.328 c-15.202,15.202-15.202,39.854,0,55.056l64.235,64.229c15.202,15.202,39.854,15.202,55.056,0l120.815-120.814l120.822,120.814 c15.202,15.202,39.854,15.202,55.056,0l64.235-64.229c15.202-15.202,15.202-39.854,0-55.056L370.793,251.514l120.82-120.815 C506.815,115.49,506.815,90.845,491.613,75.643z",
+                            _c("div", { staticClass: "selected-box" }, [
+                              _c(
+                                "a",
+                                {
+                                  staticClass: "btn-remove",
+                                  on: {
+                                    click: function ($event) {
+                                      return _vm.remove(name, index)
+                                    },
                                   },
-                                }),
-                              ]
-                            ),
+                                },
+                                [
+                                  _c(
+                                    "svg",
+                                    {
+                                      staticStyle: {
+                                        "enable-background":
+                                          "new 0 0 503.021 503.021",
+                                      },
+                                      attrs: {
+                                        fill: "#388e3c",
+                                        xmlns: "http://www.w3.org/2000/svg",
+                                        "xmlns:xlink":
+                                          "http://www.w3.org/1999/xlink",
+                                        x: "0px",
+                                        y: "0px",
+                                        width: "503.021px",
+                                        height: "503.021px",
+                                        viewBox: "0 0 503.021 503.021",
+                                        "xml:space": "preserve",
+                                      },
+                                    },
+                                    [
+                                      _c("path", {
+                                        attrs: {
+                                          d: "M491.613,75.643l-64.235-64.235c-15.202-15.202-39.854-15.202-55.056,0L251.507,132.222L130.686,11.407 c-15.202-15.202-39.853-15.202-55.055,0L11.401,75.643c-15.202,15.202-15.202,39.854,0,55.056l120.821,120.815L11.401,372.328 c-15.202,15.202-15.202,39.854,0,55.056l64.235,64.229c15.202,15.202,39.854,15.202,55.056,0l120.815-120.814l120.822,120.814 c15.202,15.202,39.854,15.202,55.056,0l64.235-64.229c15.202-15.202,15.202-39.854,0-55.056L370.793,251.514l120.82-120.815 C506.815,115.49,506.815,90.845,491.613,75.643z",
+                                        },
+                                      }),
+                                    ]
+                                  ),
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c("span", { staticClass: "selected-option" }, [
+                                _vm._v(
+                                  _vm._s(
+                                    Object.values(
+                                      _vm.features[name][parseInt(id) - 1]
+                                    )[1]
+                                  )
+                                ),
+                              ]),
+                            ]),
                           ]
-                        ),
-                        _vm._v(" "),
-                        _c("span", { staticClass: "selected-option" }, [
-                          _vm._v(
-                            _vm._s(
-                              Object.values(
-                                _vm.features[name][parseInt(id) - 1]
-                              )[1]
-                            )
-                          ),
-                        ]),
-                      ]),
-                    ])
-                  }),
-                ],
-                2
-              ),
-            ],
-            1
-          )
-        }),
-        0
-      ),
+                        )
+                      }),
+                    ],
+                    2
+                  )
+                }),
+              ],
+              2
+            )
+          : _vm._e(),
+      ]),
       _vm._v(" "),
-      _c("search-results"),
+      _c("search-results", { attrs: { results: _vm.results } }),
     ],
     1
   )
@@ -3035,35 +3121,31 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    {
-      staticClass: "results-container",
-      class: { "no-results": _vm.noResults },
-    },
-    [
-      _vm.noResults
-        ? _c("div", { staticClass: "no-results-overlay" }, [_vm._m(0)])
-        : _c("div", { staticClass: "results-overlay" }, [
-            _vm._v("\n        data\n    "),
-          ]),
-    ]
-  )
+  return _c("div", { staticClass: "results-container" }, [
+    _c(
+      "div",
+      { staticClass: "results-overlay" },
+      _vm._l(_vm.results, function (result, index) {
+        return _c(
+          "div",
+          { key: index },
+          _vm._l(result, function (bird, index) {
+            return _c("div", { key: index }, [
+              _vm._v(
+                "\n                " +
+                  _vm._s(bird.dutch_name) +
+                  "\n            "
+              ),
+            ])
+          }),
+          0
+        )
+      }),
+      0
+    ),
+  ])
 }
-var staticRenderFns = [
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "mt-4" }, [
-      _c("h1", [_vm._v("Oh nee!")]),
-      _vm._v(" "),
-      _c("div", { staticClass: "no-results-message" }, [
-        _vm._v("We konden geen vogels vinden..."),
-      ]),
-    ])
-  },
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -3086,7 +3168,7 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
+  return _c("div", { staticClass: "field-container" }, [
     _c("label", { attrs: { for: _vm.name } }, [_vm._v(_vm._s(_vm.label))]),
     _vm._v(" "),
     _c(
@@ -3124,7 +3206,9 @@ var render = function () {
       },
       _vm._l(_vm.options, function (option, index) {
         return _c("option", { key: index, domProps: { value: option.id } }, [
-          _vm._v(_vm._s(_vm.getDescription(option))),
+          _vm._v(
+            "\n            " + _vm._s(_vm.getDescription(option)) + "\n        "
+          ),
         ])
       }),
       0

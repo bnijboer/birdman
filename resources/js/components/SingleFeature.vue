@@ -1,16 +1,19 @@
 <template>
-    <div>
+    <div class="field-container">
         <label :for="name">{{ label }}</label>
-        
         <select v-model="feature.name" :id="name" :name="name" @change="select">
-            <option v-for="(option, index) in options" :key="index" :value="option.id">{{ getDescription(option) }}</option>
+            <option v-for="(option, index) in options" :key="index" :value="option.id">
+                {{ getDescription(option) }}
+            </option>
         </select>
     </div>
 </template>
 
 <script>
     export default {
-        props: ['feature'],
+        props: [
+            'feature'
+        ],
         
         data() {
             return {
@@ -39,20 +42,6 @@
                 }
                 
                 return label;
-            },
-            
-            pretext() {
-                switch(this.name) {
-                    case 'behaviors':
-                        this.pretext = 'Vogels die ';
-                    break;
-                    case 'shapes':
-                        this.pretext = 'Het lijkt op een ';
-                    break;
-                    case 'habitats':
-                        this.pretext = 'Ik ben ';
-                    break;
-                }
             }
         },
         
@@ -89,6 +78,8 @@
                 };
                 
                 this.$emit('select', selected);
+                
+                event.target.value = '';
             }
         }
     }

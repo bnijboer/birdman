@@ -7,20 +7,24 @@
         @apply bg-green-300;
     }
     
-    form {
-        @apply my-8;
-    }
-    
     svg {
         @apply h-8 w-8;
     }
     
+    label {
+        @apply block uppercase tracking-wide text-center font-semibold text-white my-1;
+    }
+    
     select {
-        @apply rounded-full p-2;
+        @apply w-full rounded-b-lg py-2;
     }
     
     h1 {
         @apply text-6xl text-gray-900 font-semibold;
+    }
+    
+    h2 {
+        @apply text-3xl text-gray-900 font-semibold;
     }
 }
 
@@ -29,8 +33,28 @@
         @apply flex flex-col min-h-screen px-16;
     }
     
+    .search-container {
+        @apply space-y-8 my-8;
+    }
+    
+    .fields-grid {
+        @apply grid grid-cols-2 gap-4;
+    }
+    
+    .field-container {
+        @apply bg-emerald-500 border border-emerald-500 rounded-lg;
+    }
+    
+    .criteria-container {
+        @apply flex space-y-2;
+    }
+    
+    .criteria-label {
+        @apply flex items-center shrink-0 w-28 font-semibold;
+    }
+    
     .selected-box {
-        @apply inline-flex items-center bg-white rounded-lg py-2 pl-2 pr-4 mt-2;
+        @apply flex items-center bg-white rounded-lg py-2 pl-2 pr-4 mr-2;
     }
     
     .selected-option {

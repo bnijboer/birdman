@@ -1,13 +1,22 @@
 <template>
     <div class="wrapper">
-        <form @submit.prevent>
-            <div v-for="(options, name) in features" :key="name" style="margin: 20px;">
-                <single-feature :feature="{ 'name': name, 'options': options }" @select="add" />
-        
-                <div>
-                    <div>Gekozen {{ getTranslatedFeature(name) }}:</div>
-                    
-                    <div v-for="(id, index) in selected[name]" :key="index">
+        <div class="search-container">
+            <form @submit.prevent>
+                <div class="fields-grid">
+                    <div v-for="(options, name) in features" :key="name" style="margin: 20px;">
+                        <single-feature :feature="{ 'name': name, 'options': options }" @select="add" />
+                    </div>
+                </div>
+            </form>
+            
+            <div v-if="criteria">
+                <h2 class="mb-4">Zoekcriteria</h2>
+                
+                <div v-for="(trait, name) in selected" :key="name" class="criteria-container">
+                    <div v-if="trait.length" class="criteria-label">
+                        <span>{{ getLabel(name) }}:</span>
+                    </div>
+                    <div v-for="(id, index) in trait" :key="index" class="flex flex-wrap"> 
                         <div class="selected-box">
                             <a class="btn-remove" @click="remove(name, index)">
                                 <svg fill="#388e3c" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="503.021px" height="503.021px" viewBox="0 0 503.021 503.021" style="enable-background:new 0 0 503.021 503.021;" xml:space="preserve">
@@ -20,9 +29,9 @@
                     </div>
                 </div>
             </div>
-        </form>
+        </div>
         
-        <search-results />
+        <search-results :results="results" />
     </div>
 </template>
 
@@ -37,11 +46,47 @@
                     behaviors: [],
                     shapes: [],
                     habitats: []
+                },
+                results: null
+            }
+        },
+        
+        computed: {
+            criteria() {
+                let hasCriteria = false;
+                
+                for (const [name, values] of Object.entries(this.selected)) {
+                    if (values.length > 0) {
+                        hasCriteria = true;
+                    }
                 }
+                
+                return hasCriteria;
             }
         },
         
         methods: {
+            getLabel(trait) {
+                let translation;
+                
+                switch(trait) {
+                    case 'colors':
+                        translation = 'Kleur';
+                    break;
+                    case 'behaviors':
+                        translation = 'Gedrag';
+                    break;
+                    case 'shapes':
+                        translation = 'Vorm';
+                    break;
+                    case 'habitats':
+                        translation = 'Leefgebied';
+                    break;
+                }
+                
+                return translation;
+            },
+            
             add(event) {
                 let trait = Object.keys(event)[0];
                 let id = Object.values(event)[0];
@@ -73,8 +118,8 @@
                 
                 const url = `/birds?${params.join('&')}`;
                 
-                const response = axios.get(url).then((response) => {
-                    console.log(response.data)
+                axios.get(url).then((response) => {
+                    this.results = response.data;
                 });
             },
             
