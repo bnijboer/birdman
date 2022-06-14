@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             BehaviorSeeder::class,
             ShapeSeeder::class,
             HabitatSeeder::class,
+            CharacteristicSeeder::class,
         ]);
         
         $birds = Bird::all();
@@ -54,6 +55,14 @@ class DatabaseSeeder extends Seeder
                 
                 foreach ($habitatIds as $habitatId) {
                     $bird->habitats()->attach($habitatId);
+                }
+            }
+            
+            if (isset($bird->characteristics)) {
+                $characteristicIds = explode('&', $bird->characteristics);
+                
+                foreach ($characteristicIds as $characteristicId) {
+                    $bird->characteristics()->attach($characteristicId);
                 }
             }
         }

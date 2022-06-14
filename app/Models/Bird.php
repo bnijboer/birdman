@@ -26,4 +26,12 @@ class Bird extends Model
     public function habitats() {
         return $this->belongsToMany(Habitat::class);
     }
+    
+    public function characteristics() {
+        return $this->belongsToMany(Characteristic::class);
+    }
+    
+    public function getPicture() {
+        return $this->image ?? '/images/bird-default.jpg';
+    }
 }

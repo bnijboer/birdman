@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('habitat')->nullable();
             $table->string('when_to_spot')->nullable();
             $table->tinyInteger('rarity')->nullable();
-            // $table->text('characteristics')->nullable();
+            $table->string('characteristics')->nullable();
             // $table->text('description')->nullable();
             $table->text('image')->nullable();
             // $table->text('sound')->nullable();
