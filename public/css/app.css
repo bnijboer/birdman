@@ -379,10 +379,9 @@ Ensure the default browser behavior of the `hidden` attribute.
 [hidden] {
   display: none;
 }
-    body {
-  --tw-bg-opacity: 1;
-  background-color: rgb(134 239 172 / var(--tw-bg-opacity));
-}
+    /* body {
+        @apply ;
+    } */
     
     label {
   margin-top: 0.25rem;
@@ -464,8 +463,30 @@ Ensure the default browser behavior of the `hidden` attribute.
   --tw-backdrop-saturate:  ;
   --tw-backdrop-sepia:  ;
 }
+.sticky {
+  position: -webkit-sticky;
+  position: sticky;
+}
+.top-0 {
+  top: 0px;
+}
+.right-0 {
+  right: 0px;
+}
+.z-50 {
+  z-index: 50;
+}
+.m-4 {
+  margin: 1rem;
+}
 .mb-4 {
   margin-bottom: 1rem;
+}
+.mb-8 {
+  margin-bottom: 2rem;
+}
+.ml-auto {
+  margin-left: auto;
 }
 .block {
   display: block;
@@ -488,8 +509,19 @@ Ensure the default browser behavior of the `hidden` attribute.
 .flex-wrap {
   flex-wrap: wrap;
 }
+.justify-end {
+  justify-content: flex-end;
+}
+.justify-center {
+  justify-content: center;
+}
 .gap-8 {
   gap: 2rem;
+}
+.space-y-8 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(2rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(2rem * var(--tw-space-y-reverse));
 }
 .rounded-lg {
   border-radius: 0.5rem;
@@ -500,6 +532,14 @@ Ensure the default browser behavior of the `hidden` attribute.
 }
 .p-2 {
   padding: 0.5rem;
+}
+.px-4 {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+.px-8 {
+  padding-left: 2rem;
+  padding-right: 2rem;
 }
 .text-center {
   text-align: center;
@@ -526,27 +566,37 @@ Ensure the default browser behavior of the `hidden` attribute.
   --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
-.wrapper {
-  display: flex;
-  min-height: 100vh;
-  flex-direction: column;
-  padding-left: 4rem;
-  padding-right: 4rem;
+.filter {
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
-.search-container {
-  margin-top: 2rem;
-  margin-bottom: 2rem;
+/* .wrapper {
+        @apply flex flex-col min-h-screen px-16;
+    } */
+.sidebar {
+  z-index: 30;
 }
-.search-container > :not([hidden]) ~ :not([hidden]) {
+.sidebar > :not([hidden]) ~ :not([hidden]) {
   --tw-space-y-reverse: 0;
   margin-top: calc(2rem * calc(1 - var(--tw-space-y-reverse)));
   margin-bottom: calc(2rem * var(--tw-space-y-reverse));
 }
-.fields-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1rem;
+.sidebar {
+  --tw-bg-opacity: 1;
+  background-color: rgb(134 239 172 / var(--tw-bg-opacity));
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+        position: fixed;
+        top: 0;
+        right: -150%;
+        transition: all 0.5s ease-in-out;
+        /* left: 0; */
 }
+.sidebar-open {
+        right: 0;
+    }
+/* .fields-grid {
+        @apply grid grid-cols-2 gap-4;
+    } */
 .field-container {
   border-radius: 0.5rem;
   border-width: 1px;
@@ -596,8 +646,22 @@ Ensure the default browser behavior of the `hidden` attribute.
   flex-grow: 1;
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
-  padding: 2rem;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
 }
+@media (min-width: 768px) {
+
+  .results-container {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+.thumbnail {
+        height: 300px;
+        width: 100%;
+        -o-object-fit: cover;
+           object-fit: cover;
+    }
 .rarity-icon {
   display: inline;
   height: 1.25rem;
@@ -608,6 +672,11 @@ Ensure the default browser behavior of the `hidden` attribute.
 
   .sm\:grid-cols-2 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .sm\:px-0 {
+    padding-left: 0px;
+    padding-right: 0px;
   }
 }
 

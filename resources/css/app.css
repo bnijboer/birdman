@@ -3,9 +3,9 @@
 @tailwind utilities;
 
 @layer base {
-    body {
-        @apply bg-green-300;
-    }
+    /* body {
+        @apply ;
+    } */
     
     label {
         @apply block uppercase tracking-wide text-center font-semibold text-white my-1;
@@ -25,17 +25,26 @@
 }
 
 @layer utilities {
-    .wrapper {
+    /* .wrapper {
         @apply flex flex-col min-h-screen px-16;
+    } */
+    
+    .sidebar {
+        @apply space-y-8 py-8 bg-green-300 z-30;
+        position: fixed;
+        top: 0;
+        right: -150%;
+        transition: all 0.5s ease-in-out;
+        /* left: 0; */
     }
     
-    .search-container {
-        @apply space-y-8 my-8;
+    .sidebar-open {
+        right: 0;
     }
     
-    .fields-grid {
+    /* .fields-grid {
         @apply grid grid-cols-2 gap-4;
-    }
+    } */
     
     .field-container {
         @apply bg-emerald-500 border border-emerald-500 rounded-lg;
@@ -62,7 +71,13 @@
     }
     
     .results-container {
-        @apply grow bg-white p-8;
+        @apply grow bg-white py-8 md:px-8;
+    }
+    
+    .thumbnail {
+        height: 300px;
+        width: 100%;
+        object-fit: cover;
     }
     
     .rarity-icon {

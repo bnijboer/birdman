@@ -1,9 +1,16 @@
 <template>
-    <div class="wrapper">
-        <div class="search-container">
+    <div>
+        <div class="flex justify-end sticky top-0 z-50">
+            <button @click="toggleSidebar" class="m-4">
+                <span v-if="sidebarOpen">Inklappen</span>
+                <span v-else>Uitklappen</span>
+            </button>
+        </div>
+        
+        <div class="sidebar sticky top-0 px-8" :class="sidebarOpen ? 'sidebar-open' : ''">
             <form @submit.prevent>
-                <div class="fields-grid">
-                    <div v-for="(options, name) in features" :key="name" style="margin: 20px;">
+                <div class="space-y-8">
+                    <div v-for="(options, name) in features" :key="name">
                         <single-feature :feature="{ 'name': name, 'options': options }" @select="add" />
                     </div>
                 </div>
@@ -29,8 +36,12 @@
                     </div>
                 </div>
             </div>
+            
+            <div class="flex justify-center">
+                <button @click="search" class="">Zoeken</button>
+            </div>
         </div>
-        
+            
         <search-results :results="results" />
     </div>
 </template>
@@ -47,7 +58,8 @@
                     shapes: [],
                     habitats: []
                 },
-                results: null
+                results: null,
+                sidebarOpen: true,
             }
         },
         
@@ -66,6 +78,11 @@
         },
         
         methods: {
+            toggleSidebar() {
+                this.sidebarOpen = !this.sidebarOpen;
+                console.log(this.sidebarOpen);
+            },
+            
             getLabel(trait) {
                 let translation;
                 
@@ -94,14 +111,14 @@
                 if (! this.selected[trait].includes(id)) {
                     this.selected[trait].push(id);
                 
-                    this.search();
+                    // this.search();
                 }
             },
             
             remove(trait, index) {
                 this.selected[trait].splice(index, 1);
                 
-                this.search();
+                // this.search();
             },
             
             search() {
@@ -120,6 +137,7 @@
                 
                 axios.get(url).then((response) => {
                     this.results = response.data;
+                    this.sidebarOpen = false;
                 });
             },
             

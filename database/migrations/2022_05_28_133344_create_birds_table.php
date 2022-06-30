@@ -16,7 +16,6 @@ return new class extends Migration
         Schema::create('birds', function (Blueprint $table) {
             $table->id();
             $table->string('dutch_name');
-            // $table->string('english_name')->nullable();
             // $table->string('latin_name')->nullable();
             $table->string('color')->nullable();
             $table->string('behavior')->nullable();
@@ -26,8 +25,11 @@ return new class extends Migration
             $table->tinyInteger('rarity')->nullable();
             $table->string('characteristics')->nullable();
             // $table->text('description')->nullable();
-            $table->text('image')->nullable();
-            // $table->text('sound')->nullable();
+            $table->string('image_credit')->nullable();
+            $table->string('image_author_reference')->nullable();
+            $table->string('image_wikimedia_source')->nullable();
+            $table->string('image_license')->nullable();
+            $table->string('image_license_url')->nullable();
             $table->timestamps();
         });
     }
