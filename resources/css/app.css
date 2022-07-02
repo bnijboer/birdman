@@ -3,10 +3,6 @@
 @tailwind utilities;
 
 @layer base {
-    /* body {
-        @apply ;
-    } */
-    
     label {
         @apply block uppercase tracking-wide text-center font-semibold text-white my-1;
     }
@@ -22,52 +18,44 @@
     h2 {
         @apply text-3xl text-gray-900 font-semibold;
     }
+    
+    h3 {
+        @apply text-xl text-gray-700 font-semibold;
+    }
 }
 
 @layer utilities {
-    /* .wrapper {
-        @apply flex flex-col min-h-screen px-16;
-    } */
-    
-    .sidebar {
-        @apply space-y-8 py-8 bg-green-300 z-30;
-        position: fixed;
-        top: 0;
-        right: -150%;
+    .menu {
+        @apply z-30 fixed w-screen max-h-screen inset-y-0 translate-y-full flex flex-col md:flex-row justify-end md:translate-y-0 md:max-w-[500px] md:right-0 md:translate-x-full;
         transition: all 0.5s ease-in-out;
-        /* left: 0; */
     }
     
-    .sidebar-open {
-        right: 0;
+    .menu-open {
+        @apply transform-none;
     }
-    
-    /* .fields-grid {
-        @apply grid grid-cols-2 gap-4;
-    } */
     
     .field-container {
-        @apply bg-emerald-500 border border-emerald-500 rounded-lg;
+        @apply bg-emerald-700 border border-emerald-700 rounded-lg;
     }
     
-    .criteria-container {
+    /* .criteria-container {
         @apply flex space-y-2;
-    }
+    } */
     
-    .criteria-label {
+    /* .criteria-label {
         @apply flex items-center shrink-0 w-28 font-semibold;
-    }
+    } */
     
     .selected-box {
-        @apply flex items-center bg-white rounded-lg py-2 pl-2 pr-4 mr-2;
+        @apply flex items-center bg-white rounded-lg p-1;
     }
     
     .selected-option {
-        @apply font-semibold text-green-900 ml-4;
+        @apply font-semibold text-green-900 ml-2;
     }
     
     .remove-icon {
-        @apply h-8 w-8;
+        @apply h-4 w-4;
     }
     
     .results-container {

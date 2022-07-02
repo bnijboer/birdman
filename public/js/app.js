@@ -2227,6 +2227,12 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: ['features'],
   data: function data() {
@@ -2238,7 +2244,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         habitats: []
       },
       results: null,
-      sidebarOpen: true
+      menuOpen: true
     };
   },
   computed: {
@@ -2259,9 +2265,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     }
   },
   methods: {
-    toggleSidebar: function toggleSidebar() {
-      this.sidebarOpen = !this.sidebarOpen;
-      console.log(this.sidebarOpen);
+    toggleMenu: function toggleMenu() {
+      this.menuOpen = !this.menuOpen;
     },
     getLabel: function getLabel(trait) {
       var translation;
@@ -2317,7 +2322,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       var url = "/birds?".concat(params.join('&'));
       axios.get(url).then(function (response) {
         _this.results = response.data;
-        _this.sidebarOpen = false;
+        _this.menuOpen = false;
       });
     },
     getTranslatedFeature: function getTranslatedFeature(name) {
@@ -2363,6 +2368,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2457,12 +2474,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  props: ['results'] // data() {
-  //     return {
-  //         results: []
-  //     }
-  // },
-  // make call to BirdController with optional birdcollection argument
+  props: ['results'] // make call to BirdController with optional birdcollection argument
   // in BirdController, if no collection parameter is provided, fetch all birds
   // if collection is provided, filter collection using queryscopes
   // return results as json
@@ -3121,144 +3133,190 @@ var render = function () {
   return _c(
     "div",
     [
-      _c("div", { staticClass: "flex justify-end sticky top-0 z-50" }, [
-        _c("button", { staticClass: "m-4", on: { click: _vm.toggleSidebar } }, [
-          _vm.sidebarOpen
-            ? _c("span", [_vm._v("Inklappen")])
-            : _c("span", [_vm._v("Uitklappen")]),
-        ]),
-      ]),
-      _vm._v(" "),
       _c(
-        "div",
+        "button",
         {
-          staticClass: "sidebar sticky top-0 px-8",
-          class: _vm.sidebarOpen ? "sidebar-open" : "",
+          staticClass: "z-50 fixed w-14 h-14 p-4 right-0 bottom-0 md:top-0",
+          on: { click: _vm.toggleMenu },
         },
         [
+          _c("i", { staticClass: "fa-solid fa-magnifying-glass" }),
+          _vm._v(" "),
           _c(
-            "form",
+            "svg",
             {
-              on: {
-                submit: function ($event) {
-                  $event.preventDefault()
-                },
+              attrs: {
+                xmlns: "http://www.w3.org/2000/svg",
+                viewBox: "0 0 512 512",
               },
             },
             [
-              _c(
-                "div",
-                { staticClass: "space-y-8" },
-                _vm._l(_vm.features, function (options, name) {
-                  return _c(
-                    "div",
-                    { key: name },
-                    [
-                      _c("single-feature", {
-                        attrs: { feature: { name: name, options: options } },
-                        on: { select: _vm.add },
-                      }),
-                    ],
-                    1
-                  )
-                }),
-                0
-              ),
+              _c("path", {
+                attrs: {
+                  d: "M500.3 443.7l-119.7-119.7c27.22-40.41 40.65-90.9 33.46-144.7C401.8 87.79 326.8 13.32 235.2 1.723C99.01-15.51-15.51 99.01 1.724 235.2c11.6 91.64 86.08 166.7 177.6 178.9c53.8 7.189 104.3-6.236 144.7-33.46l119.7 119.7c15.62 15.62 40.95 15.62 56.57 0C515.9 484.7 515.9 459.3 500.3 443.7zM79.1 208c0-70.58 57.42-128 128-128s128 57.42 128 128c0 70.58-57.42 128-128 128S79.1 278.6 79.1 208z",
+                },
+              }),
             ]
           ),
-          _vm._v(" "),
-          _vm.criteria
-            ? _c(
-                "div",
-                [
-                  _c("h2", { staticClass: "mb-4" }, [_vm._v("Zoekcriteria")]),
-                  _vm._v(" "),
-                  _vm._l(_vm.selected, function (trait, name) {
-                    return _c(
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "menu", class: _vm.menuOpen ? "menu-open" : "" },
+        [
+          _c("div", { staticClass: "inline-block" }, [
+            _c(
+              "div",
+              {
+                staticClass:
+                  "bg-emerald-400 space-y-4 lg:space-y-8 px-2 py-4 lg:p-8",
+              },
+              [
+                _c("h3", { staticClass: "text-center mb-4 lg:mb-8" }, [
+                  _vm._v("Zoeken op:"),
+                ]),
+                _vm._v(" "),
+                _c(
+                  "form",
+                  {
+                    on: {
+                      submit: function ($event) {
+                        $event.preventDefault()
+                      },
+                    },
+                  },
+                  [
+                    _c(
                       "div",
-                      { key: name, staticClass: "criteria-container" },
-                      [
-                        trait.length
-                          ? _c("div", { staticClass: "criteria-label" }, [
-                              _c("span", [
-                                _vm._v(_vm._s(_vm.getLabel(name)) + ":"),
-                              ]),
-                            ])
-                          : _vm._e(),
-                        _vm._v(" "),
-                        _vm._l(trait, function (id, index) {
-                          return _c(
-                            "div",
-                            { key: index, staticClass: "flex flex-wrap" },
-                            [
-                              _c("div", { staticClass: "selected-box" }, [
-                                _c(
-                                  "a",
-                                  {
-                                    staticClass: "btn-remove",
-                                    on: {
-                                      click: function ($event) {
-                                        return _vm.remove(name, index)
-                                      },
-                                    },
-                                  },
+                      { staticClass: "space-y-4 lg:space-y-8 px-4" },
+                      _vm._l(_vm.features, function (options, name) {
+                        return _c(
+                          "div",
+                          { key: name },
+                          [
+                            _c("single-feature", {
+                              attrs: {
+                                feature: { name: name, options: options },
+                              },
+                              on: { select: _vm.add },
+                            }),
+                          ],
+                          1
+                        )
+                      }),
+                      0
+                    ),
+                  ]
+                ),
+                _vm._v(" "),
+                _vm.criteria
+                  ? _c("div", [
+                      _c("h3", { staticClass: "text-center mb-4" }, [
+                        _vm._v("Zoekcriteria:"),
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        { staticClass: "space-y-4 text-xs lg:text-sm" },
+                        _vm._l(_vm.selected, function (trait, name) {
+                          return _c("div", { key: name }, [
+                            trait.length
+                              ? _c(
+                                  "div",
+                                  { staticClass: "font-semibold mb-1" },
+                                  [_vm._v(_vm._s(_vm.getLabel(name)) + ":")]
+                                )
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              { staticClass: "space-x-1 space-y-1" },
+                              _vm._l(trait, function (id, index) {
+                                return _c(
+                                  "div",
+                                  { key: index, staticClass: "inline-block" },
                                   [
-                                    _c(
-                                      "svg",
-                                      {
-                                        staticClass: "remove-icon",
-                                        staticStyle: {
-                                          "enable-background":
-                                            "new 0 0 503.021 503.021",
-                                        },
-                                        attrs: {
-                                          fill: "#388e3c",
-                                          xmlns: "http://www.w3.org/2000/svg",
-                                          "xmlns:xlink":
-                                            "http://www.w3.org/1999/xlink",
-                                          x: "0px",
-                                          y: "0px",
-                                          width: "503.021px",
-                                          height: "503.021px",
-                                          viewBox: "0 0 503.021 503.021",
-                                          "xml:space": "preserve",
-                                        },
-                                      },
-                                      [
-                                        _c("path", {
-                                          attrs: {
-                                            d: "M491.613,75.643l-64.235-64.235c-15.202-15.202-39.854-15.202-55.056,0L251.507,132.222L130.686,11.407 c-15.202-15.202-39.853-15.202-55.055,0L11.401,75.643c-15.202,15.202-15.202,39.854,0,55.056l120.821,120.815L11.401,372.328 c-15.202,15.202-15.202,39.854,0,55.056l64.235,64.229c15.202,15.202,39.854,15.202,55.056,0l120.815-120.814l120.822,120.814 c15.202,15.202,39.854,15.202,55.056,0l64.235-64.229c15.202-15.202,15.202-39.854,0-55.056L370.793,251.514l120.82-120.815 C506.815,115.49,506.815,90.845,491.613,75.643z",
+                                    _c("div", { staticClass: "selected-box" }, [
+                                      _c(
+                                        "a",
+                                        {
+                                          staticClass: "btn-remove",
+                                          on: {
+                                            click: function ($event) {
+                                              return _vm.remove(name, index)
+                                            },
                                           },
-                                        }),
-                                      ]
-                                    ),
+                                        },
+                                        [
+                                          _c(
+                                            "svg",
+                                            {
+                                              staticClass: "remove-icon",
+                                              staticStyle: {
+                                                "enable-background":
+                                                  "new 0 0 503.021 503.021",
+                                              },
+                                              attrs: {
+                                                fill: "#388e3c",
+                                                xmlns:
+                                                  "http://www.w3.org/2000/svg",
+                                                "xmlns:xlink":
+                                                  "http://www.w3.org/1999/xlink",
+                                                x: "0px",
+                                                y: "0px",
+                                                width: "503.021px",
+                                                height: "503.021px",
+                                                viewBox: "0 0 503.021 503.021",
+                                                "xml:space": "preserve",
+                                              },
+                                            },
+                                            [
+                                              _c("path", {
+                                                attrs: {
+                                                  d: "M491.613,75.643l-64.235-64.235c-15.202-15.202-39.854-15.202-55.056,0L251.507,132.222L130.686,11.407 c-15.202-15.202-39.853-15.202-55.055,0L11.401,75.643c-15.202,15.202-15.202,39.854,0,55.056l120.821,120.815L11.401,372.328 c-15.202,15.202-15.202,39.854,0,55.056l64.235,64.229c15.202,15.202,39.854,15.202,55.056,0l120.815-120.814l120.822,120.814 c15.202,15.202,39.854,15.202,55.056,0l64.235-64.229c15.202-15.202,15.202-39.854,0-55.056L370.793,251.514l120.82-120.815 C506.815,115.49,506.815,90.845,491.613,75.643z",
+                                                },
+                                              }),
+                                            ]
+                                          ),
+                                        ]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "span",
+                                        { staticClass: "selected-option" },
+                                        [
+                                          _vm._v(
+                                            _vm._s(
+                                              Object.values(
+                                                _vm.features[name][
+                                                  parseInt(id) - 1
+                                                ]
+                                              )[1]
+                                            )
+                                          ),
+                                        ]
+                                      ),
+                                    ]),
                                   ]
-                                ),
-                                _vm._v(" "),
-                                _c("span", { staticClass: "selected-option" }, [
-                                  _vm._v(
-                                    _vm._s(
-                                      Object.values(
-                                        _vm.features[name][parseInt(id) - 1]
-                                      )[1]
-                                    )
-                                  ),
-                                ]),
-                              ]),
-                            ]
-                          )
+                                )
+                              }),
+                              0
+                            ),
+                          ])
                         }),
-                      ],
-                      2
-                    )
-                  }),
-                ],
-                2
-              )
-            : _vm._e(),
-          _vm._v(" "),
-          _c("div", { staticClass: "flex justify-center" }, [
-            _c("button", { on: { click: _vm.search } }, [_vm._v("Zoeken")]),
+                        0
+                      ),
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _c("div", { staticClass: "flex justify-center" }, [
+                  _c("button", { on: { click: _vm.search } }, [
+                    _vm._v("Zoeken"),
+                  ]),
+                ]),
+              ]
+            ),
           ]),
         ]
       ),
@@ -3297,7 +3355,7 @@ var render = function () {
     _vm._l(_vm.result, function (bird, index) {
       return _c("div", { key: index, staticClass: "px-4 sm:px-0" }, [
         _c("div", { staticClass: "flex flex-col rounded-lg shadow-md" }, [
-          _c("div", [
+          _c("div", { staticClass: "relative" }, [
             _c("img", {
               staticClass: "thumbnail",
               attrs: {
@@ -3306,32 +3364,83 @@ var render = function () {
               },
             }),
             _vm._v(" "),
-            _c("div", [
-              bird.image_credit
-                ? _c("span", [_vm._v("Foto door " + _vm._s(bird.image_credit))])
-                : _vm._e(),
-              _vm._v(" "),
-              bird.image_license && bird.image_license_url
-                ? _c("span", [
-                    _vm._v(" / "),
-                    _c(
-                      "a",
-                      {
-                        attrs: {
-                          href: bird.image_license_url,
-                          target: "_blank",
-                        },
-                      },
-                      [_vm._v(_vm._s(bird.image_license))]
+            bird.image_attribution
+              ? _c(
+                  "div",
+                  {
+                    staticClass:
+                      "absolute bottom-0 w-full text-[9px] tracking-widest bg-black/[.4] text-gray-100 py-1 pl-2",
+                  },
+                  [
+                    _vm._v(
+                      "\n                    Foto: \n                    \n                    "
                     ),
-                  ])
-                : _vm._e(),
-            ]),
+                    bird.image_attribution_url
+                      ? _c("span", [
+                          _c(
+                            "a",
+                            {
+                              staticClass: "italic",
+                              attrs: {
+                                href: bird.image_attribution_url,
+                                target: "_blank",
+                              },
+                            },
+                            [_vm._v(_vm._s(bird.image_attribution))]
+                          ),
+                        ])
+                      : _c("span", { staticClass: "italic" }, [
+                          _vm._v(_vm._s(bird.image_attribution)),
+                        ]),
+                    _vm._v(" "),
+                    bird.image_edited_by
+                      ? _c("span", [
+                          _vm._v(", bewerking: "),
+                          _c("span", { staticClass: "italic" }, [
+                            _vm._v(_vm._s(bird.image_edited_by)),
+                          ]),
+                        ])
+                      : _vm._e(),
+                    _vm._v(" "),
+                    bird.image_cc_license && bird.image_cc_license_url
+                      ? _c("span", [
+                          _vm._v("\n                        / "),
+                          _c(
+                            "a",
+                            {
+                              attrs: {
+                                href: bird.image_cc_license_url,
+                                target: "_blank",
+                              },
+                            },
+                            [_vm._v(_vm._s(bird.image_cc_license))]
+                          ),
+                        ])
+                      : _vm._e(),
+                    _vm._v(" "),
+                    bird.image_gnu_license && bird.image_gnu_license_url
+                      ? _c("span", [
+                          _vm._v("\n                        / "),
+                          _c(
+                            "a",
+                            {
+                              attrs: {
+                                href: bird.image_gnu_license_url,
+                                target: "_blank",
+                              },
+                            },
+                            [_vm._v(_vm._s(bird.image_gnu_license))]
+                          ),
+                        ])
+                      : _vm._e(),
+                  ]
+                )
+              : _vm._e(),
           ]),
           _vm._v(" "),
           _c(
             "div",
-            { staticClass: "grow text-center text-white bg-emerald-700 p-2" },
+            { staticClass: "grow text-center text-white bg-emerald-700 p-4" },
             [
               _c(
                 "div",
@@ -3342,19 +3451,23 @@ var render = function () {
               ),
               _vm._v(" "),
               _c("div", { staticClass: "p-2" }, [
-                _vm._v(_vm._s(bird.when_to_spot)),
+                _vm._v("Wanneer te zien: "),
+                _c("span", { staticClass: "lowercase" }, [
+                  _vm._v(_vm._s(bird.when_to_spot)),
+                ]),
               ]),
               _vm._v(" "),
               _c("div", [
                 _c(
                   "a",
                   {
+                    staticClass: "underline",
                     attrs: {
                       href: _vm.getExternalLink(bird.dutch_name),
                       target: "_blank",
                     },
                   },
-                  [_vm._v("Link Vogelbescherming")]
+                  [_vm._v("Meer informatie")]
                 ),
               ]),
             ]

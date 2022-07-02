@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
             BehaviorSeeder::class,
             ShapeSeeder::class,
             HabitatSeeder::class,
-            CharacteristicSeeder::class,
+            // CharacteristicSeeder::class,
         ]);
         
         $birds = Bird::all();
@@ -58,13 +58,13 @@ class DatabaseSeeder extends Seeder
                 }
             }
             
-            if (isset($bird->characteristics)) {
-                $characteristicIds = explode('&', $bird->characteristics);
+            // if (isset($bird->characteristics)) {
+            //     $characteristicIds = explode('&', $bird->characteristics);
                 
-                foreach ($characteristicIds as $characteristicId) {
-                    $bird->characteristics()->attach($characteristicId);
-                }
-            }
+            //     foreach ($characteristicIds as $characteristicId) {
+            //         $bird->characteristics()->attach($characteristicId);
+            //     }
+            // }
         }
     }
 }

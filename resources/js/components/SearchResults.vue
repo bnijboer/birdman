@@ -12,13 +12,6 @@
     export default {
         props: ['results'],
         
-        // data() {
-        //     return {
-        //         results: []
-        //     }
-        // },
-        
-        
         // make call to BirdController with optional birdcollection argument
         // in BirdController, if no collection parameter is provided, fetch all birds
         // if collection is provided, filter collection using queryscopes
