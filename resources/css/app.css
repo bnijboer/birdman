@@ -3,6 +3,10 @@
 @tailwind utilities;
 
 @layer base {
+    body {
+        @apply min-h-screen;
+    }
+    
     label {
         @apply block uppercase tracking-wide text-center font-semibold text-white my-1;
     }
@@ -54,13 +58,13 @@
         @apply font-semibold text-green-900 ml-2;
     }
     
-    .remove-icon {
+    /* .remove-icon {
         @apply h-4 w-4;
-    }
+    } */
     
-    .results-container {
+    /* .results-container {
         @apply grow bg-white py-8 md:px-8;
-    }
+    } */
     
     .thumbnail {
         height: 300px;
@@ -68,7 +72,7 @@
         object-fit: cover;
     }
     
-    .rarity-icon {
+    /* .rarity-icon {
         @apply inline h-5 w-5;
-    }
+    } */
 }

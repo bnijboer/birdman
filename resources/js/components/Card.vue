@@ -1,18 +1,15 @@
 <template>
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-        <div v-for="(bird, index) in result" :key="index" class="px-4 sm:px-0">
             <div class="flex flex-col rounded-lg shadow-md">
                 <div class="relative">
                     <img :src="getImagePath(bird.dutch_name)" alt="/images/bird-default.jpg" class="thumbnail">
+                    
                     <div v-if="bird.image_attribution" class="absolute bottom-0 w-full text-[9px] tracking-widest bg-black/[.4] text-gray-100 py-1 pl-2">
                         Foto: 
                         
                         <span v-if="bird.image_attribution_url">
                             <a :href="bird.image_attribution_url" target="_blank" class="italic">{{ bird.image_attribution }}</a>
                         </span>
-                        <span v-else class="italic">{{ bird.image_attribution }}</span>
-                        
-                        <span v-if="bird.image_edited_by">, bewerking: <span class="italic">{{ bird.image_edited_by }}</span></span>
+                        <span v-else class="italic">{{ bird.image_attribution }}</span><span v-if="bird.image_edited_by">, bewerking: <span class="italic">{{ bird.image_edited_by }}</span></span>
                         
                         <span v-if="bird.image_cc_license && bird.image_cc_license_url">
                             / <a :href="bird.image_cc_license_url" target="_blank">{{ bird.image_cc_license }}</a>
@@ -32,42 +29,39 @@
                     
                     <div class="p-2">Wanneer te zien: <span class="lowercase">{{ bird.when_to_spot }}</span></div>
                     
-                    <div>
-                        <a :href="getExternalLink(bird.dutch_name)" target="_blank" class="underline">Meer informatie</a>
-                    </div>
+                    <a :href="getExternalLink(bird.dutch_name)" target="_blank" class="underline">Meer informatie</a>
                 </div>
             </div>
-        </div>
-    </div>
 </template>
 
 <script>
     export default {
-        props: ['result'],
+        // props: ['result'],
+        props: ['bird'],
         
         methods: {
-            getRarityColor(rarityGrade) {
-                let color;
+            // getRarityColor(rarityGrade) {
+            //     let color;
                 
-                switch (rarityGrade) {
-                    case 1:
-                        color = '#000';
-                    break;
-                    case 2:
-                        color = '#d4d4d8'
-                    break;
-                    case 3:
-                        color = '#ffff00';
-                    break;
-                    case 4:
-                        color = '#d50000';
-                    break;
-                    default:
-                        color = '#fff';
-                }
+            //     switch (rarityGrade) {
+            //         case 1:
+            //             color = '#000';
+            //         break;
+            //         case 2:
+            //             color = '#d4d4d8'
+            //         break;
+            //         case 3:
+            //             color = '#ffff00';
+            //         break;
+            //         case 4:
+            //             color = '#d50000';
+            //         break;
+            //         default:
+            //             color = '#fff';
+            //     }
                 
-                return color;
-            },
+            //     return color;
+            // },
             
             getImagePath(name) {
                 return "/images/" + name + ".jpg";
